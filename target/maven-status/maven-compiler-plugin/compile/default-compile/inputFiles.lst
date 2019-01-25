@@ -1,0 +1,12 @@
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\http\ChannelInitializerSSL.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\util\RedisUtil.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\simulation\handler\SimpleChatClientHandler.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\simulation\server\SimpleChatClient.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\constant\ConfigConstant.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\server\SimpleChatServer.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\simulation\handler\SimpleChatClientInitializer.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\util\NameUtil.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\http\SimpleChatServerHandler.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\http\SimpleChatServerInitializer.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\http\FullHttpHandler.java
+G:\YCC\nettyServer\src\main\java\com\ycc\netty\server\HttpServer.java
