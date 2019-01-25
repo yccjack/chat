@@ -31,7 +31,7 @@ public class NameUtil {
         BufferedReader bufferedReader = null;
         StringBuilder finalString = new StringBuilder();
         try {
-            FileInputStream reader = new FileInputStream(file);
+            FileInputStream reader = new FileInputStream(NameUtil.class.getClassLoader().getResource("surname.json").getFile());
             InputStreamReader inputStreamReader = new InputStreamReader(reader, StandardCharsets.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             String temp = null;

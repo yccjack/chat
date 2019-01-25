@@ -5,6 +5,7 @@ import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.server.SimpleChatClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -19,6 +20,10 @@ public class RootLayoutController {
     public TextArea chatHisId;
     @FXML
     public Button sendId;
+
+    @FXML
+    public ListView<String> chatHumanId;
+
 
     public void sendMsg() {
         //获取当前的时间
@@ -38,6 +43,6 @@ public class RootLayoutController {
     }
 
     public void callBack(){
-        chatHisId.setText(RedisProxy.get(ConfigConstant.chat_return_msg.getValue()));
+        chatHisId.appendText(RedisProxy.get(ConfigConstant.chat_return_msg.getValue())+"\n");
     }
 }

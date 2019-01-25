@@ -30,11 +30,11 @@ public enum ConfigConstant {
     /**
      * 服务器默认端口
      */
-    serverPort("8081"),
+    serverPort("8082"),
     /**
      * 服务器默认地址
      */
-    serverHost("192.168.6.211");
+    serverHost("localhost");
     private String value;
 
     ConfigConstant(String value) {

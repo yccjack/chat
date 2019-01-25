@@ -18,7 +18,7 @@ public class SimpleChatClientHandler extends SimpleChannelInboundHandler<String>
     private Logger logger = LoggerFactory.getLogger(SimpleChatClientHandler.class);
 
     /**
-     * 回调rootLayout填充textArea
+     * 回调rootLayout
      */
     private RootLayoutController rootLayoutController;
 

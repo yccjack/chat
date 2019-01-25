@@ -12,6 +12,6 @@
       <ListView fx:id="chatHumanId" layoutX="14.0" layoutY="13.0" prefHeight="375.0" prefWidth="145.0" />
       <TextField fx:id="sendMsgId" layoutX="172.0" layoutY="351.0" prefHeight="23.0" prefWidth="335.0" promptText="发送内容" />
       <TextArea fx:id="chatHisId" layoutX="172.0" layoutY="13.0" prefHeight="330.0" prefWidth="414.0" promptText="聊天记录" />
-      <Button fx:id="sendId" layoutX="523.0" layoutY="351.0" mnemonicParsing="false" onAction="#sendMsg" text="发送" />
+      <Button  fx:id="sendId" layoutX="523.0" layoutY="351.0" mnemonicParsing="false" onAction="#sendMsg" text="发送" />
    </children>
 </AnchorPane>

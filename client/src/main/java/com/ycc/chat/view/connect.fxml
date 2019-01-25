@@ -11,7 +11,7 @@
    <children>
       <Button fx:id="startId" layoutX="460.0" layoutY="177.0" mnemonicParsing="false" onAction="#start" text="启动" />
       <Label layoutX="41.0" layoutY="181.0" text="服务器地址:" />
-      <TextField fx:id="hostId" layoutX="128.0" layoutY="177.0" prefHeight="23.0" prefWidth="95.0" promptText="192.168.6.211" />
+      <TextField fx:id="hostId" layoutX="128.0" layoutY="177.0" prefHeight="23.0" prefWidth="95.0" promptText="localhost" />
       <Label layoutX="261.0" layoutY="181.0" text="端口号:" />
       <TextField fx:id="portId" layoutX="317.0" layoutY="177.0" prefHeight="23.0" prefWidth="122.0" promptText="8081" />
    </children>
