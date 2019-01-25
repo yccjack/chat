@@ -1,7 +1,0 @@
-com\ycc\netty\http\SimpleChatServerInitializer.class
-com\ycc\netty\http\ChannelInitializerSSL.class
-com\ycc\netty\http\SimpleChatServerHandler.class
-com\ycc\netty\server\HttpServer$1.class
-com\ycc\netty\server\HttpServer.class
-com\ycc\netty\server\SimpleChatServer.class
-com\ycc\netty\http\FullHttpHandler.class
