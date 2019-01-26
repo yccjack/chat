@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
  * @version 1.0
  * @date 2019/1/22 9:21
  */
-public class SimpleChatClientHandler extends SimpleChannelInboundHandler<String> {
+public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 
-    private Logger logger = LoggerFactory.getLogger(SimpleChatClientHandler.class);
+    private Logger logger = LoggerFactory.getLogger(ChatClientHandler.class);
 
     /**
      * 回调rootLayout

@@ -3,7 +3,7 @@ package com.ycc.netty.simulation.server;
 import com.ycc.chat.controller.RootLayoutController;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
-import com.ycc.netty.simulation.handler.SimpleChatClientInitializer;
+import com.ycc.netty.simulation.handler.ChatClientInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -17,7 +17,7 @@ import io.netty.util.internal.StringUtil;
  * @version 1.0
  * @date 2019/1/22 9:15
  */
-public class SimpleChatClient {
+public class ChatClient {
 
     private final int port;
     private final String host;
@@ -25,8 +25,8 @@ public class SimpleChatClient {
 
     private Channel channel;
 
-    private  SimpleChatClientInitializer simpleChatClientInitializer;
-    public SimpleChatClient(String host, int port) {
+    private ChatClientInitializer simpleChatClientInitializer;
+    public ChatClient(String host, int port) {
         this.port = port;
         this.host = host;
     }
@@ -35,7 +35,7 @@ public class SimpleChatClient {
      * default host:192.168.6.211
      * port:8081
      */
-    public SimpleChatClient() {
+    public ChatClient() {
         this.port = Integer.parseInt(ConfigConstant.serverPort.getValue());
         this.host = ConfigConstant.serverHost.getValue();
     }
@@ -46,7 +46,7 @@ public class SimpleChatClient {
      * @throws Exception
      */
     public void run() throws Exception {
-        simpleChatClientInitializer = new SimpleChatClientInitializer();
+        simpleChatClientInitializer = new ChatClientInitializer();
         group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap()
                 .group(group)
@@ -92,9 +92,9 @@ public class SimpleChatClient {
     public static void main(String[] args) throws Exception {
         if (args.length > 1) {
             String host = args[0];
-            new SimpleChatClient(host, 8081).run();
+            new ChatClient(host, 8081).run();
         } else {
-            SimpleChatClient simpleChatClient = new SimpleChatClient("192.168.6.211", 8081);
+            ChatClient simpleChatClient = new ChatClient("192.168.6.211", 8081);
             for (int i = 0; i < 10; i++) {
                 RedisProxy.set(ConfigConstant.chat_msg.getValue(), i + "");
                 if (i == 0) {

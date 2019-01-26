@@ -15,13 +15,13 @@ import io.netty.handler.codec.string.StringEncoder;
  * @version 1.0
  * @date 2019/1/22 9:27
  */
-public class SimpleChatClientInitializer extends ChannelInitializer<SocketChannel> {
+public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
 
-    private SimpleChatClientHandler simpleChatClientHandler;
+    private ChatClientHandler simpleChatClientHandler;
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        simpleChatClientHandler = new SimpleChatClientHandler();
+        simpleChatClientHandler = new ChatClientHandler();
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8196, Delimiters.lineDelimiter()))
                 .addLast("decoder", new StringDecoder())

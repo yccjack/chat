@@ -2,7 +2,7 @@ package com.ycc;
 
 import com.ycc.chat.controller.ConnectLayoutController;
 import com.ycc.chat.controller.RootLayoutController;
-import com.ycc.netty.simulation.server.SimpleChatClient;
+import com.ycc.netty.simulation.server.ChatClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,19 +11,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/**
+ * @author MysticalYcc
+ */
 public class Main extends Application {
 
     private Stage primaryStage;
 
-    private static SimpleChatClient client;
+    private static ChatClient client;
 
     public void initRootLayout(String host, int port) {
-        intClient(host, port);
+
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("chat/view/root.fxml"));
+        loader.setLocation(this.getClass().getClassLoader().getResource("./root.fxml"));
         try {
             AnchorPane load = loader.load();
             RootLayoutController rootLayoutController = loader.getController();
+            intClient(host, port);
             rootLayoutController.setClient(client);
             /**
              * 控制回调
@@ -48,9 +53,9 @@ public class Main extends Application {
     private void intClient(String host, int port) {
         try {
             if (host != null && port != 0) {
-                client = new SimpleChatClient(host, port);
+                client = new ChatClient(host, port);
             } else {
-                client = new SimpleChatClient();
+                client = new ChatClient();
             }
             client.run();
         } catch (Exception e) {
@@ -74,7 +79,7 @@ public class Main extends Application {
         dialogPrimary = new Stage();
         dialogPrimary.setTitle("Connect");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("chat/view/connect.fxml"));
+        loader.setLocation(this.getClass().getClassLoader().getResource("./connect.fxml"));
         try {
             AnchorPane load = loader.load();
             ConnectLayoutController connectLayoutController = loader.getController();

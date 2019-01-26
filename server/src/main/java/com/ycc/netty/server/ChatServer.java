@@ -1,6 +1,6 @@
 package com.ycc.netty.server;
 
-import com.ycc.netty.http.SimpleChatServerInitializer;
+import com.ycc.netty.http.ChatServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
  * @version 1.0
  * @date 2019/1/22 9:00
  */
-public class SimpleChatServer {
+public class ChatServer {
 
-    private Logger log = LoggerFactory.getLogger(SimpleChatServer.class);
+    private Logger log = LoggerFactory.getLogger(ChatServer.class);
     private int port;
 
-    public SimpleChatServer(int port) {
+    public ChatServer(int port) {
         this.port = port;
 
     }
@@ -32,7 +32,7 @@ public class SimpleChatServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(boss, worker)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new SimpleChatServerInitializer())
+                    .childHandler(new ChatServerInitializer())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             log.info("服务启动");
@@ -52,6 +52,6 @@ public class SimpleChatServer {
         } else {
             port = 8082;
         }
-        new SimpleChatServer(port).run();
+        new ChatServer(port).run();
     }
 }

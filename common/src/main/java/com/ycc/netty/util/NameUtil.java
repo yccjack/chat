@@ -27,7 +27,6 @@ public class NameUtil {
     private static List<String> SUR_NAME = new ArrayList<>();
 
     private static void init() {
-        File file = new File("surname.json");
         BufferedReader bufferedReader = null;
         StringBuilder finalString = new StringBuilder();
         try {

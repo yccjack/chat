@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 
+/**
+ * @author MysticalYcc
+ */
 public class ConnectLayoutController {
     private Main appMain;
 
