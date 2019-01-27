@@ -136,6 +136,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         for (Channel ch : channels) {
             ch.writeAndFlush("[SERVER] - " + NameUtil.getName(channel.remoteAddress().toString()) + " 离开聊天室\n");
         }
+        NameUtil.remove(channel.remoteAddress().toString());
         channels.remove(ctx.channel());
     }
 
