@@ -24,7 +24,7 @@ public class Main extends Application {
     public void initRootLayout(String host, int port) {
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getClassLoader().getResource("./root.fxml"));
+        loader.setLocation(this.getClass().getClassLoader().getResource("root.fxml"));
         try {
             AnchorPane load = loader.load();
             RootLayoutController rootLayoutController = loader.getController();
@@ -79,7 +79,7 @@ public class Main extends Application {
         dialogPrimary = new Stage();
         dialogPrimary.setTitle("Connect");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getClassLoader().getResource("./connect.fxml"));
+        loader.setLocation(this.getClass().getClassLoader().getResource("connect.fxml"));
         try {
             AnchorPane load = loader.load();
             ConnectLayoutController connectLayoutController = loader.getController();

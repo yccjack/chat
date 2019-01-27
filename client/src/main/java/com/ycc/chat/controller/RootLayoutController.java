@@ -1,14 +1,15 @@
 package com.ycc.chat.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.server.ChatClient;
 import io.netty.util.internal.StringUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -41,8 +42,6 @@ public class RootLayoutController {
     /**
      * 聊天人员列表
      */
-    private List<String> chatListView = new ArrayList<>();
-
     private NotifyChannel notifyChannel = new NotifyChannel();
 
     public void sendMsg() {
@@ -64,7 +63,6 @@ public class RootLayoutController {
 
     public void callBack() {
         String returnMsg = RedisProxy.get(ConfigConstant.chat_return_msg.getValue());
-        System.out.println(returnMsg);
         if (!StringUtil.isNullOrEmpty(returnMsg) && returnMsg.contains("{") && returnMsg.contains("}")) {
             NotifyChannel notifyChannel = JSON.parseObject(returnMsg, NotifyChannel.class);
 
@@ -80,6 +78,8 @@ public class RootLayoutController {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
             }
         } else {
             chatHisId.appendText(returnMsg + "\n");
@@ -89,6 +89,7 @@ public class RootLayoutController {
 
     public void init(NotifyChannel notifyChannel) {
         Map<String, String> chatList = notifyChannel.getChatList();
+        List<String> chatListView = new ArrayList<>();
         for (Map.Entry<String, String> entry : chatList.entrySet()) {
             chatListView.add(entry.getValue());
         }
@@ -101,16 +102,13 @@ public class RootLayoutController {
     public void add(NotifyChannel notifyChannel) {
         Map<String, String> chatList = this.notifyChannel.getChatList();
         chatList.put(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
-        chatListView.add(notifyChannel.getAddChatPerson());
-        ObservableList<String> strList = FXCollections.observableArrayList(chatListView);
-        chatHumanId.setItems(strList);
+        Platform.runLater(() -> chatHumanId.getItems().add(notifyChannel.getAddChatPerson()));
     }
 
     public void remove(NotifyChannel notifyChannel) {
         Map<String, String> chatList = this.notifyChannel.getChatList();
         chatList.remove(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
-        chatListView.remove(notifyChannel.getAddChatPerson());
-        ObservableList<String> strList = FXCollections.observableArrayList(chatListView);
-        chatHumanId.setItems(strList);
+        Platform.runLater(() -> chatHumanId.getItems().remove(notifyChannel.getAddChatPerson()));
+
     }
 }

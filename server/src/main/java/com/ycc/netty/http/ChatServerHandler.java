@@ -83,7 +83,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        notifyChatList(channel);
+        notifyChatListRemove(channel);
         log.info("ChatServerHandler:" + channel.remoteAddress() + "[" + NameUtil.nameMap.get(channel.remoteAddress().toString()) + ":" + channel.remoteAddress().toString() + "] 掉线");
         NameUtil.remove(channel.remoteAddress().toString());
     }
@@ -93,13 +93,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
      *
      * @param channel
      */
-    private void notifyChatList(Channel channel) {
+    private void notifyChatListRemove(Channel channel) {
         for (Channel ch : channels) {
-            NotifyChannel chatBean = new NotifyChannel();
-            chatBean.setAddChatPerson(NameUtil.getName(channel.remoteAddress().toString()));
-            chatBean.setAddChatRemote(channel.remoteAddress().toString());
-            chatBean.setMethod(NotifyChannel.METHOD_REMOVE);
-            ch.writeAndFlush(JSON.toJSONString(chatBean) + "\n");
+            if (ch != channel.remoteAddress()) {
+                NotifyChannel chatBean = new NotifyChannel();
+                chatBean.setAddChatPerson(NameUtil.getName(channel.remoteAddress().toString()));
+                chatBean.setAddChatRemote(channel.remoteAddress().toString());
+                chatBean.setMethod(NotifyChannel.METHOD_REMOVE);
+                ch.writeAndFlush(JSON.toJSONString(chatBean) + "\n");
+            }
         }
     }
 
@@ -113,7 +115,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String addr = channel.remoteAddress().toString();
         NameUtil.remove(addr);
-        notifyChatList(channel);
+        notifyChatListRemove(channel);
         log.info("ChatServerHandler" + addr + "异常!");
         cause.printStackTrace();
         ctx.close();
@@ -123,8 +125,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         for (Channel ch : channels) {
-            ch.writeAndFlush("[SERVER] - " + channel.remoteAddress() + " incoming\n");
-
+            ch.writeAndFlush("[SERVER] - " + NameUtil.getName(channel.remoteAddress().toString()) + " 进入聊天室\n");
         }
         channels.add(ctx.channel());
     }
@@ -133,8 +134,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         for (Channel ch : channels) {
-            ch.writeAndFlush("[SERVER] - " + channel.remoteAddress() + " lived\n");
-
+            ch.writeAndFlush("[SERVER] - " + NameUtil.getName(channel.remoteAddress().toString()) + " 离开聊天室\n");
         }
         channels.remove(ctx.channel());
     }
