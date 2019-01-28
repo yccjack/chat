@@ -6,9 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ycc.chat.controller.RootLayoutController">
+<AnchorPane blendMode="GREEN" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ycc.chat.controller.RootLayoutController">
    <children>
-      <ListView fx:id="chatHumanId" layoutX="14.0" layoutY="13.0" prefHeight="375.0" prefWidth="145.0" />
+      <ListView fx:id="chatHumanId" layoutX="14.0" layoutY="13.0" onMouseClicked="#clickListViewToP2P" prefHeight="375.0" prefWidth="145.0" />
       <TextField fx:id="sendMsgId" layoutX="172.0" layoutY="351.0" prefHeight="23.0" prefWidth="335.0" promptText="发送内容" />
       <TextArea fx:id="chatHisId" layoutX="172.0" layoutY="13.0" prefHeight="330.0" prefWidth="414.0" promptText="聊天记录" />
       <Button fx:id="sendId" defaultButton="true" layoutX="523.0" layoutY="351.0" mnemonicParsing="false" onAction="#sendMsg" text="发送" />

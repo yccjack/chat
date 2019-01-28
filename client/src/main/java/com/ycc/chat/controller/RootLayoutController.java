@@ -1,6 +1,7 @@
 package com.ycc.chat.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.ycc.Main;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
@@ -9,7 +10,6 @@ import io.netty.util.internal.StringUtil;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -18,10 +18,12 @@ import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author MysticalYcc
@@ -39,11 +41,17 @@ public class RootLayoutController {
 
     @FXML
     public ListView<String> chatHumanId;
+
+    private Map<String, String> remoteAddrMap = new HashMap<>();
     /**
      * 聊天人员列表
      */
     private NotifyChannel notifyChannel = new NotifyChannel();
+    private Main appMain;
 
+    /**
+     * 发送消息
+     */
     public void sendMsg() {
         //获取当前的时间
         LocalTime nowTime = LocalTime.now().withNano(0);
@@ -55,6 +63,12 @@ public class RootLayoutController {
             e.printStackTrace();
         }
         sendMsgId.clear();
+    }
+
+    public void clickListViewToP2P() {
+        String s = chatHumanId.getSelectionModel().getSelectedItems().get(0);
+        System.out.println(s);
+        appMain.initP2P(s, remoteAddrMap.get(s));
     }
 
     public void setClient(ChatClient client) {
@@ -72,13 +86,7 @@ public class RootLayoutController {
                  */
                 Method method = this.getClass().getDeclaredMethod(notifyChannel.getMethod(), NotifyChannel.class);
                 method.invoke(this, notifyChannel);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
@@ -92,6 +100,7 @@ public class RootLayoutController {
         List<String> chatListView = new ArrayList<>();
         for (Map.Entry<String, String> entry : chatList.entrySet()) {
             chatListView.add(entry.getValue());
+            remoteAddrMap.put(entry.getValue(), entry.getKey());
         }
         this.notifyChannel.setChatList(chatList);
         ObservableList<String> strList = FXCollections.observableArrayList(chatListView);
@@ -101,14 +110,20 @@ public class RootLayoutController {
 
     public void add(NotifyChannel notifyChannel) {
         Map<String, String> chatList = this.notifyChannel.getChatList();
+        remoteAddrMap.put(notifyChannel.getAddChatPerson(), notifyChannel.getAddChatRemote());
         chatList.put(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().add(notifyChannel.getAddChatPerson()));
     }
 
     public void remove(NotifyChannel notifyChannel) {
         Map<String, String> chatList = this.notifyChannel.getChatList();
+        remoteAddrMap.remove(notifyChannel.getAddChatPerson());
         chatList.remove(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().remove(notifyChannel.getAddChatPerson()));
 
+    }
+
+    public void setAppMain(Main appMain) {
+        this.appMain = appMain;
     }
 }

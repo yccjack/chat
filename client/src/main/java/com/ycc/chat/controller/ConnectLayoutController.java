@@ -30,8 +30,8 @@ public class ConnectLayoutController {
 
     public void start() {
         appMain.closeDialog();
-        if (portId.getText() != null && !StringUtil.isNullOrEmpty(portId.getText())) {
-            appMain.initRootLayout(portId.getText(), Integer.parseInt(portId.getText()));
+        if (!StringUtil.isNullOrEmpty(portId.getText()) && !StringUtil.isNullOrEmpty(portId.getText())) {
+            appMain.initRootLayout(hostId.getText(), Integer.parseInt(portId.getText()));
         } else {
             appMain.initRootLayout(null, 0);
         }

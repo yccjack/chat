@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="297.0" prefWidth="503.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ycc.chat.controller.ChatP2P">
+   <children>
+      <Accordion layoutX="119.0" layoutY="41.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <panes>
+          <TitledPane animated="false" text="私聊">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="353.0" prefWidth="501.0">
+                     <children>
+                        <TextArea fx:id="chatHisId" layoutX="14.0" prefHeight="200.0" prefWidth="474.0" promptText="聊天记录" />
+                        <TextField fx:id="sendMsgId" layoutX="14.0" layoutY="219.0" prefHeight="23.0" prefWidth="401.0" promptText="发送内容" />
+                        <Button fx:id="sendId" defaultButton="true" layoutX="433.0" layoutY="219.0" mnemonicParsing="false" onAction="#sendMsg" text="发送" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="音乐">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</AnchorPane>

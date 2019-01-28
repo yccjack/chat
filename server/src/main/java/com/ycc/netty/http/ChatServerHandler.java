@@ -33,7 +33,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        log.info("ChatServerHandler->channelRead0：[]", msg);
+        log.debug("ChatServerHandler->channelRead0：[]", msg);
         Channel channel = channelHandlerContext.channel();
         for (Channel ch : channels) {
             if (ch != channel) {
@@ -73,7 +73,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 ch.writeAndFlush(JSON.toJSONString(chatBean) + "\n");
             }
         }
-        log.info("ChatServerHandler:" + channel.remoteAddress() + "在线");
+        log.debug("ChatServerHandler:" + channel.remoteAddress() + "在线");
     }
 
     /**
@@ -84,8 +84,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         notifyChatListRemove(channel);
-        log.info("ChatServerHandler:" + channel.remoteAddress() + "[" + NameUtil.nameMap.get(channel.remoteAddress().toString()) + ":" + channel.remoteAddress().toString() + "] 掉线");
-        NameUtil.remove(channel.remoteAddress().toString());
+        log.debug("ChatServerHandler:" + channel.remoteAddress() + "[" + NameUtil.nameMap.get(channel.remoteAddress().toString()) + ":" + channel.remoteAddress().toString() + "] 掉线");
     }
 
     /**
@@ -116,7 +115,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String addr = channel.remoteAddress().toString();
         NameUtil.remove(addr);
         notifyChatListRemove(channel);
-        log.info("ChatServerHandler" + addr + "异常!");
+        log.error("ChatServerHandler" + addr + "异常!");
         cause.printStackTrace();
         ctx.close();
     }

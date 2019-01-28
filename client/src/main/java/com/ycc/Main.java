@@ -1,5 +1,6 @@
 package com.ycc;
 
+import com.ycc.chat.controller.ChatP2P;
 import com.ycc.chat.controller.ConnectLayoutController;
 import com.ycc.chat.controller.RootLayoutController;
 import com.ycc.netty.simulation.server.ChatClient;
@@ -30,6 +31,7 @@ public class Main extends Application {
             RootLayoutController rootLayoutController = loader.getController();
             intClient(host, port);
             rootLayoutController.setClient(client);
+            rootLayoutController.setAppMain(this);
             /**
              * 控制回调
              */
@@ -50,6 +52,12 @@ public class Main extends Application {
 
     }
 
+    /**
+     * 初始化netty客户端
+     *
+     * @param host 服务器地址
+     * @param port 端口号
+     */
     private void intClient(String host, int port) {
         try {
             if (host != null && port != 0) {
@@ -75,7 +83,10 @@ public class Main extends Application {
 
     private Stage dialogPrimary;
 
-    public void initConnectLayout() {
+    /**
+     * 初始化启动connect.fxml
+     */
+    private void initConnectLayout() {
         dialogPrimary = new Stage();
         dialogPrimary.setTitle("Connect");
         FXMLLoader loader = new FXMLLoader();
@@ -92,8 +103,30 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * 关闭模组
+     */
     public void closeDialog() {
         dialogPrimary.close();
+    }
+
+    public void initP2P(String remoteAddr, String remoteName) {
+        Stage dialogP2P = new Stage();
+        dialogP2P.setTitle("P2P");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(this.getClass().getClassLoader().getResource("P2P.fxml"));
+        try {
+            AnchorPane load = loader.load();
+            ChatP2P chatP2P = loader.getController();
+            chatP2P.setRemoteAddr(remoteAddr);
+            chatP2P.setRemoteName(remoteName);
+            chatP2P.setClient(client);
+            Scene scene = new Scene(load);
+            dialogP2P.setScene(scene);
+            dialogP2P.show();
+        } catch (Exception e) {
+
+        }
     }
 
 }
