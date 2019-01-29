@@ -18,12 +18,14 @@ public class NotifyChannel implements Serializable {
     private String addChatRemote;
     private String removeChatRemote;
 
-    @JSONField(serialize=false)
+    private SendMsg sendMsg;
+
+    @JSONField(serialize = false)
     public transient final static String METHOD_ADD = "add";
-    @JSONField(serialize=false)
-    public   transient final static String METHOD_REMOVE = "remove";
-    @JSONField(serialize=false)
-    public  transient final static String METHOD_INIT = "init";
+    @JSONField(serialize = false)
+    public transient final static String METHOD_REMOVE = "remove";
+    @JSONField(serialize = false)
+    public transient final static String METHOD_INIT = "init";
 
     public String getAddChatRemote() {
         return addChatRemote;
@@ -71,5 +73,13 @@ public class NotifyChannel implements Serializable {
 
     public void setRemoveChatPerson(String removeChatPerson) {
         this.removeChatPerson = removeChatPerson;
+    }
+
+    public SendMsg getSendMsg() {
+        return sendMsg;
+    }
+
+    public void setSendMsg(SendMsg sendMsg) {
+        this.sendMsg = sendMsg;
     }
 }

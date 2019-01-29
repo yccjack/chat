@@ -5,41 +5,50 @@ import java.time.LocalTime;
 
 public class SendMsg implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String msg;
-    private LocalTime sendTime;
+    private String chatMsg;
+    private LocalTime sendTime =LocalTime.now().withNano(0);
     private String sendTarget;
+    private String sendFrom;
 
+    private String name;
 
-    public static class Builder {
-        private String msg;
-        private LocalTime sendTime;
-        private String sendTarget;
-
-        public Builder sendMsg(String msg) {
-            this.msg = msg;
-            return this;
-        }
-
-        public Builder sendTime(LocalTime sendTime) {
-            this.sendTime = sendTime;
-            return this;
-        }
-
-        public Builder sendTarget(String sendTarget) {
-            this.sendTarget = sendTarget;
-            return this;
-        }
-
-
-        public SendMsg builder() {
-            return new SendMsg(this);
-        }
+    public String getChatMsg() {
+        return chatMsg;
     }
 
-    private SendMsg(Builder builder) {
-        this.msg = builder.msg;
-        this.sendTarget = builder.sendTarget;
-        this.sendTime = builder.sendTime;
+    public void setChatMsg(String chatMsg) {
+        this.chatMsg = chatMsg;
     }
 
+    public LocalTime getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(LocalTime sendTime) {
+        this.sendTime = sendTime;
+    }
+
+    public String getSendTarget() {
+        return sendTarget;
+    }
+
+    public void setSendTarget(String sendTarget) {
+        this.sendTarget = sendTarget;
+    }
+
+    public String getSendFrom() {
+        return sendFrom;
+    }
+
+    public void setSendFrom(String sendFrom) {
+        this.sendFrom = sendFrom;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

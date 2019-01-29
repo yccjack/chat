@@ -1,8 +1,9 @@
 package com.ycc;
 
-import com.ycc.chat.controller.ChatP2P;
+import com.ycc.chat.abst.LayoutController;
 import com.ycc.chat.controller.ConnectLayoutController;
-import com.ycc.chat.controller.RootLayoutController;
+import com.ycc.netty.bean.NotifyChannel;
+import com.ycc.netty.simulation.aop.RegisterCallBackFc;
 import com.ycc.netty.simulation.server.ChatClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -28,14 +29,15 @@ public class Main extends Application {
         loader.setLocation(this.getClass().getClassLoader().getResource("root.fxml"));
         try {
             AnchorPane load = loader.load();
-            RootLayoutController rootLayoutController = loader.getController();
+            LayoutController rootLayoutController = loader.getController();
             intClient(host, port);
             rootLayoutController.setClient(client);
             rootLayoutController.setAppMain(this);
             /**
-             * 控制回调
+             * 注册回调函数
              */
-            client.setRootLayoutCallBack(rootLayoutController);
+            RegisterCallBackFc.registerCallBack("rootLayoutController", rootLayoutController);
+            RegisterCallBackFc.registerCallBack("realController", rootLayoutController);
             Scene scene = new Scene(load);
             primaryStage.setTitle("Chat");
             primaryStage.setScene(scene);
@@ -110,22 +112,30 @@ public class Main extends Application {
         dialogPrimary.close();
     }
 
-    public void initP2P(String remoteAddr, String remoteName) {
+    public void initP2P(String remoteAddr, String remoteName, NotifyChannel notifyChannel) {
         Stage dialogP2P = new Stage();
         dialogP2P.setTitle("P2P");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getClassLoader().getResource("P2P.fxml"));
         try {
             AnchorPane load = loader.load();
-            ChatP2P chatP2P = loader.getController();
+            LayoutController chatP2P = loader.getController();
             chatP2P.setRemoteAddr(remoteAddr);
             chatP2P.setRemoteName(remoteName);
+            /**
+             * 注册回调函数
+             */
+            RegisterCallBackFc.registerCallBack("realController", chatP2P);
+            RegisterCallBackFc.registerCallBack("chatP2P", chatP2P);
             chatP2P.setClient(client);
             Scene scene = new Scene(load);
             dialogP2P.setScene(scene);
             dialogP2P.show();
+            if (notifyChannel != null) {
+                chatP2P.p2pChat(notifyChannel);
+            }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

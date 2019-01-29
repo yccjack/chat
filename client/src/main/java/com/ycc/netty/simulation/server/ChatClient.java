@@ -1,6 +1,5 @@
 package com.ycc.netty.simulation.server;
 
-import com.ycc.chat.controller.RootLayoutController;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.handler.ChatClientInitializer;
@@ -106,14 +105,6 @@ public class ChatClient {
             }
             RedisProxy.set(ConfigConstant.chat_active_cotl.getValue(), "false");
             simpleChatClient.start();
-
         }
-    }
-
-    /**
-     * 控制回调
-     */
-    public void setRootLayoutCallBack(RootLayoutController rootLayoutController){
-        simpleChatClientInitializer.setSimpleChatClientHandlerBack(rootLayoutController);
     }
 }

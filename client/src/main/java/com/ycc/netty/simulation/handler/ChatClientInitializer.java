@@ -1,6 +1,6 @@
 package com.ycc.netty.simulation.handler;
 
-import com.ycc.chat.controller.RootLayoutController;
+import com.ycc.netty.simulation.aop.RegisterCallBackFc;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -17,22 +17,13 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
 
-    private ChatClientHandler simpleChatClientHandler;
-
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        simpleChatClientHandler = new ChatClientHandler();
+        ChatClientHandler chatClientHandler = RegisterCallBackFc.getChatClientHandler();
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
                 .addLast("decoder", new StringDecoder())
                 .addLast("encoder", new StringEncoder())
-                .addLast("handler", simpleChatClientHandler);
-    }
-
-    /**
-     * 控制回调
-     */
-    public void setSimpleChatClientHandlerBack(RootLayoutController rootLayoutController) {
-        simpleChatClientHandler.setRootLayoutController(rootLayoutController);
+                .addLast("handler", chatClientHandler);
     }
 }

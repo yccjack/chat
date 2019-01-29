@@ -6,10 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="326.0" prefWidth="561.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ycc.chat.controller.ConnectLayoutController">
    <children>
-      <Button fx:id="startId" layoutX="460.0" layoutY="177.0" mnemonicParsing="false" onAction="#start" text="启动" />
+      <Button fx:id="startId" defaultButton="true" layoutX="460.0" layoutY="177.0" mnemonicParsing="false" onAction="#start" text="启动" />
       <Label layoutX="41.0" layoutY="181.0" text="服务器地址:" />
       <TextField fx:id="hostId" layoutX="128.0" layoutY="177.0" prefHeight="23.0" prefWidth="95.0" promptText="localhost" />
       <Label layoutX="261.0" layoutY="181.0" text="端口号:" />
