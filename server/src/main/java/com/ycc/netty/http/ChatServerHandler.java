@@ -56,7 +56,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
      */
     private void groupChat(SendMsg sendMsg, Channel channel) {
         NotifyChannel notifyChannel = new NotifyChannel();
-        notifyChannel.setMethod("groupChat");
+        notifyChannel.setMethod(NotifyChannel.METHOD_GROUP_CHAT);
         sendMsg.setName(NameUtil.getName(channel.remoteAddress().toString()));
         notifyChannel.setSendMsg(sendMsg);
         channels.forEach(ch -> ch.writeAndFlush(JSON.toJSONString(notifyChannel) + "\n"));
@@ -70,7 +70,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
      */
     private void p2pChat(SendMsg sendMsg, Channel channel) {
         NotifyChannel notifyChannel = new NotifyChannel();
-        notifyChannel.setMethod("p2pChat");
+        notifyChannel.setMethod(NotifyChannel.METHOD_P2PCHAT);
         notifyChannel.setSendMsg(sendMsg);
         sendMsg.setSendFrom(channel.remoteAddress().toString());
         String returnMsg = JSON.toJSONString(notifyChannel);
@@ -173,7 +173,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private void AddOrRemove(Channel channel, String s) {
         NotifyChannel notifyChannel = new NotifyChannel();
-        notifyChannel.setMethod("groupChat");
+        notifyChannel.setMethod(NotifyChannel.METHOD_GROUP_CHAT);
         SendMsg sendMsg = new SendMsg();
         sendMsg.setChatMsg( NameUtil.getName(channel.remoteAddress().toString()) + s);
         notifyChannel.setSendMsg(sendMsg);

@@ -26,7 +26,10 @@ public abstract class LayoutController {
     protected String remoteAddr;
 
     protected String remoteName;
-
+    /**
+     * 记录自己获取的姓名
+     */
+    protected static String myName;
     /**
      * key：姓名；value：地址
      */
@@ -63,12 +66,29 @@ public abstract class LayoutController {
         }
     }
 
+    /**
+     * 处理服务器返回数据拼接成字符串
+     *
+     * @param notifyChannel 传递的bean
+     * @return 拼接消息字符串
+     */
     protected String handlerMsg(NotifyChannel notifyChannel) {
         SendMsg sendMsg = notifyChannel.getSendMsg();
         Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
-        String name = chatList.get(sendMsg.getSendFrom());
         LocalTime sendTime = sendMsg.getSendTime();
-        return name + "[" + sendTime + "] : " + sendMsg.getChatMsg();
+        String msg;
+        if (sendMsg.getName() == null) {
+            if (chatList.get(sendMsg.getSendFrom()) == null) {
+                msg = "";
+            } else {
+                msg = chatList.get(sendMsg.getSendFrom()).equalsIgnoreCase(myName) ? "[you]" : chatList.get(sendMsg.getSendFrom());
+            }
+        } else {
+            msg = sendMsg.getName().equalsIgnoreCase(myName) ? "[you]" : sendMsg.getName();
+        }
+
+        return msg + "[" + sendTime + "] : " + sendMsg.getChatMsg();
+
 
     }
 

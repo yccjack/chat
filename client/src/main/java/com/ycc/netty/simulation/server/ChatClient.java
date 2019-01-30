@@ -24,7 +24,6 @@ public class ChatClient {
 
     private Channel channel;
 
-    private ChatClientInitializer simpleChatClientInitializer;
     public ChatClient(String host, int port) {
         this.port = port;
         this.host = host;
@@ -45,12 +44,11 @@ public class ChatClient {
      * @throws Exception
      */
     public void run() throws Exception {
-        simpleChatClientInitializer = new ChatClientInitializer();
         group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap()
                 .group(group)
                 .channel(NioSocketChannel.class)
-                .handler(simpleChatClientInitializer);
+                .handler(new ChatClientInitializer());
         channel = b.connect(host, port).sync().channel();
         RedisProxy.set(ConfigConstant.chat_active_cotl.getValue(), "true");
         start();

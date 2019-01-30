@@ -32,6 +32,7 @@ public class RootLayoutController extends LayoutController {
     @FXML
     public Button sendId;
 
+
     @FXML
     public ListView<String> chatHumanId;
 
@@ -66,7 +67,7 @@ public class RootLayoutController extends LayoutController {
     /**
      * 初次连接初始化聊天列表
      *
-     * @param notifyChannel
+     * @param notifyChannel 传输的bean
      */
     public void init(NotifyChannel notifyChannel) {
         Map<String, String> chatList = notifyChannel.getChatList();
@@ -74,12 +75,13 @@ public class RootLayoutController extends LayoutController {
         for (Map.Entry<String, String> entry : chatList.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(notifyChannel.getAddChatRemote())) {
                 chatListView.add("[you]" + entry.getValue());
+                LayoutController.myName = entry.getValue();
             } else {
                 chatListView.add(entry.getValue());
             }
             remoteAddrMap.put(entry.getValue(), entry.getKey());
         }
-        this.notifyChannel.setChatList(chatList);
+        LayoutController.notifyChannel.setChatList(chatList);
         ObservableList<String> strList = FXCollections.observableArrayList(chatListView);
         chatHumanId.setItems(strList);
 
@@ -88,10 +90,10 @@ public class RootLayoutController extends LayoutController {
     /**
      * 新连接增加聊天人员
      *
-     * @param notifyChannel
+     * @param notifyChannel 传输的bean
      */
     public void add(NotifyChannel notifyChannel) {
-        Map<String, String> chatList = this.notifyChannel.getChatList();
+        Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
         remoteAddrMap.put(notifyChannel.getAddChatPerson(), notifyChannel.getAddChatRemote());
         chatList.put(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().add(notifyChannel.getAddChatPerson()));
@@ -100,17 +102,19 @@ public class RootLayoutController extends LayoutController {
     /**
      * 离线或者异常删除对应聊天人员
      *
-     * @param notifyChannel
+     * @param notifyChannel 传输的bean
      */
     public void remove(NotifyChannel notifyChannel) {
-        Map<String, String> chatList = this.notifyChannel.getChatList();
+        Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
         remoteAddrMap.remove(notifyChannel.getAddChatPerson());
         chatList.remove(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().remove(notifyChannel.getAddChatPerson()));
     }
 
     /**
-     * @param notifyChannel
+     * 控制javaFX群聊GUI
+     *
+     * @param notifyChannel 传输的bean
      */
     public void groupChat(NotifyChannel notifyChannel) {
         String msg = handlerMsg(notifyChannel);
@@ -118,16 +122,15 @@ public class RootLayoutController extends LayoutController {
         logger.debug(notifyChannel.toString());
     }
 
-
     /**
      * 唤醒私聊窗口
      *
-     * @param notifyChannel
+     * @param notifyChannel 传输的bean
      */
     @Override
     public void p2pChat(NotifyChannel notifyChannel) {
         SendMsg msg = notifyChannel.getSendMsg();
-        Platform.runLater(() -> appMain.initP2P(msg.getSendFrom(), this.notifyChannel.getChatList().get(msg.getSendFrom()), notifyChannel));
+        Platform.runLater(() -> appMain.initP2P(msg.getSendFrom(), LayoutController.notifyChannel.getChatList().get(msg.getSendFrom()), notifyChannel));
     }
 
 }
