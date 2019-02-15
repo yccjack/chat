@@ -30,6 +30,8 @@ public class NotifyChannel implements Serializable {
     public transient final static String METHOD_P2PCHAT = "p2pChat";
     @JSONField(serialize = false)
     public transient final static String METHOD_GROUP_CHAT = "groupChat";
+    @JSONField(serialize = false)
+    public transient final static String HEARTBEAT = "heartbeat";
 
     @JSONField(serialize = false)
     public transient final static String METHOD_GROUP_NOTICE = "notice";

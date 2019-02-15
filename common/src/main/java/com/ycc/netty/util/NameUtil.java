@@ -97,7 +97,7 @@ public class NameUtil {
         return name;
     }
 
-    public static void remove(String key) {
+    public synchronized static void remove(String key) {
         String name = nameMap.get(key);
         if (name == null) {
             return;

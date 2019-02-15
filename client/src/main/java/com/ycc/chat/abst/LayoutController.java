@@ -50,13 +50,17 @@ public abstract class LayoutController {
             if (notifyChannel != null && notifyChannel.getMethod() != null) {
                 String callBackMethod = notifyChannel.getMethod();
                 Class<? extends LayoutController> aClass;
-                if (!callBackMethod.equalsIgnoreCase("p2pChat")) {
-                    aClass = RegisterCallBackFc.callBackClMap.get("rootLayoutController").getClass();
+                if (callBackMethod.equalsIgnoreCase("heartbeat")) {
+                    this.heartbeat(notifyChannel);
                 } else {
-                    aClass = this.getClass();
+                    if (!callBackMethod.equalsIgnoreCase("p2pChat")) {
+                        aClass = RegisterCallBackFc.callBackClMap.get("rootLayoutController").getClass();
+                    } else {
+                        aClass = this.getClass();
+                    }
+                    Method method = aClass.getDeclaredMethod(notifyChannel.getMethod(), NotifyChannel.class);
+                    method.invoke(this, notifyChannel);
                 }
-                Method method = aClass.getDeclaredMethod(notifyChannel.getMethod(), NotifyChannel.class);
-                method.invoke(this, notifyChannel);
             } else {
                 logger.error("服务器回调客户端函数参数错误；" + returnMsg);
             }
@@ -86,10 +90,11 @@ public abstract class LayoutController {
         } else {
             msg = sendMsg.getName().equalsIgnoreCase(myName) ? "[you]" : sendMsg.getName();
         }
-
         return msg + "[" + sendTime + "] : " + sendMsg.getChatMsg();
+    }
 
-
+    public void heartbeat(NotifyChannel notifyChannel) {
+        logger.info("心跳检测");
     }
 
     public abstract void p2pChat(NotifyChannel notifyChannel);
