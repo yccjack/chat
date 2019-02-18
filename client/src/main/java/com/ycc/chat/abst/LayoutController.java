@@ -51,7 +51,7 @@ public abstract class LayoutController {
                 String callBackMethod = notifyChannel.getMethod();
                 Class<? extends LayoutController> aClass;
                 if (callBackMethod.equalsIgnoreCase("heartbeat")) {
-                    this.heartbeat(notifyChannel);
+                    this.heartbeat();
                 } else {
                     if (!callBackMethod.equalsIgnoreCase("p2pChat")) {
                         aClass = RegisterCallBackFc.callBackClMap.get("rootLayoutController").getClass();
@@ -93,7 +93,7 @@ public abstract class LayoutController {
         return msg + "[" + sendTime + "] : " + sendMsg.getChatMsg();
     }
 
-    public void heartbeat(NotifyChannel notifyChannel) {
+    public void heartbeat() {
         logger.info("心跳检测");
     }
 

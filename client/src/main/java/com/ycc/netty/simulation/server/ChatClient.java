@@ -3,8 +3,10 @@ package com.ycc.netty.simulation.server;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.handler.ChatClientInitializer;
+import com.ycc.netty.simulation.listener.FutureListener;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -49,7 +51,9 @@ public class ChatClient {
                 .group(group)
                 .channel(NioSocketChannel.class)
                 .handler(new ChatClientInitializer());
-        channel = b.connect(host, port).sync().channel();
+        ChannelFuture sync = b.connect(host, port).sync();
+        sync.addListener(new FutureListener());
+        channel = sync.channel();
         RedisProxy.set(ConfigConstant.chat_active_cotl.getValue(), "true");
         start();
     }
@@ -83,7 +87,6 @@ public class ChatClient {
         channel.close();
         group.shutdownGracefully().sync();
     }
-
 
 
     public static void main(String[] args) throws Exception {
