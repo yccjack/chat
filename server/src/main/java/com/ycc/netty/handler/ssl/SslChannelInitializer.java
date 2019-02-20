@@ -23,7 +23,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class SslChannelInitializer extends ChannelInitializer<Channel> {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private SSLContext sslContext;

@@ -32,6 +32,11 @@ public class ChatServer {
 
     }
 
+    /**
+     * javafx客户端服务器
+     *
+     * @throws Exception
+     */
     public void run() throws Exception {
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -40,10 +45,7 @@ public class ChatServer {
                     .childHandler(new ChatServerInitializer(group))
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            log.info("服务启动");
-            ChannelFuture f = b.bind(port).sync();
-            f.addListener(new ServerBoundListener());
-            f.channel().closeFuture().sync();
+            serverStart(b);
         } finally {
             worker.shutdownGracefully().sync();
             boss.shutdownGracefully().sync();
@@ -51,21 +53,31 @@ public class ChatServer {
         }
     }
 
+    /**
+     * websocket服务器
+     *
+     * @throws Exception
+     */
     private void websocket() throws Exception {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(boss, worker)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new HttpChatServerInitializer(group));
-            log.info("服务启动");
-            ChannelFuture f = b.bind(port).sync();
-            f.addListener(new ServerBoundListener());
-            f.channel().closeFuture().sync();
+            serverStart(b);
         } finally {
             worker.shutdownGracefully().sync();
             boss.shutdownGracefully().sync();
             log.info("服务关闭");
         }
+    }
+
+    private void serverStart(ServerBootstrap b) throws InterruptedException {
+        log.info("服务启动");
+        ChannelFuture f = b.bind(port).sync();
+        f.addListener(new ServerBoundListener());
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> f.channel().close()));
+        f.channel().closeFuture().syncUninterruptibly();
     }
 
     public static void main(String[] args) throws Exception {

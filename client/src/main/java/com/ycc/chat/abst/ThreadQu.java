@@ -1,7 +1,10 @@
 package com.ycc.chat.abst;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class ThreadQu {
     private volatile AtomicInteger index = new AtomicInteger(1);
 

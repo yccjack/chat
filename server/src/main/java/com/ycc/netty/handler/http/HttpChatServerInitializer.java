@@ -9,7 +9,10 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class HttpChatServerInitializer extends ChannelInitializer<Channel> {
     private final ChannelGroup group;
 

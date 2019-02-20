@@ -10,7 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class ChatP2P extends LayoutController {
     @FXML
     public TextField sendMsgId;

@@ -5,7 +5,10 @@ import com.ycc.netty.simulation.handler.ChatClientHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public enum RegisterCallBackFc {
     INSTANCE;
     public static Map<String, LayoutController> callBackClMap = new HashMap<>();

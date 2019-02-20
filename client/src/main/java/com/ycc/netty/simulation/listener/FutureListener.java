@@ -4,7 +4,10 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class FutureListener implements ChannelFutureListener {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());

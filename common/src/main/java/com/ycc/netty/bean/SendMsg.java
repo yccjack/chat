@@ -2,7 +2,10 @@ package com.ycc.netty.bean;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class SendMsg implements Serializable {
     private static final long serialVersionUID = 1L;
     private String chatMsg;

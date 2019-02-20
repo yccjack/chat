@@ -15,7 +15,10 @@ import java.lang.reflect.Method;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public abstract class LayoutController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

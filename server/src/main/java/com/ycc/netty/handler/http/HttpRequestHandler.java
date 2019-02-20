@@ -6,7 +6,10 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedNioFile;
 
 import java.io.RandomAccessFile;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     //websocket标识

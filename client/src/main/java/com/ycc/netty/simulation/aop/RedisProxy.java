@@ -5,7 +5,10 @@ import io.netty.util.internal.StringUtil;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
+/**
+ * @author :MysticalYcc
+ * @date :11:12 2019/2/20
+ */
 public enum RedisProxy {
     INSTANCE;
 
