@@ -4,6 +4,7 @@ package com.ycc.netty.util;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -26,28 +27,18 @@ public class NameUtil {
     private static List<String> SUR_NAME = new ArrayList<>();
 
     private static void init() {
-        BufferedReader bufferedReader = null;
         StringBuilder finalString = new StringBuilder();
-        try {
-            InputStream resourceAsStream = NameUtil.class.getClassLoader().getResourceAsStream("surname.json");
-            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
-            bufferedReader = new BufferedReader(inputStreamReader);
+        InputStream resourceAsStream = NameUtil.class.getClassLoader().getResourceAsStream("surname.json");
+        try (InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
             String temp = null;
             while ((temp = bufferedReader.readLine()) != null) {
                 finalString.append(temp);
             }
             bufferedReader.close();
             disposeReader(finalString.toString());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

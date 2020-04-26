@@ -94,7 +94,7 @@ public class ChatClient {
             String host = args[0];
             new ChatClient(host, 8081).run();
         } else {
-            ChatClient simpleChatClient = new ChatClient("192.168.6.211", 8081);
+            ChatClient simpleChatClient = new ChatClient("localhost", 8081);
             for (int i = 0; i < 10; i++) {
                 RedisProxy.set(ConfigConstant.chat_msg.getValue(), i + "");
                 if (i == 0) {
