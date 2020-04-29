@@ -1,6 +1,5 @@
 package com.ycc.netty.simulation.handler;
 
-import com.ycc.Main;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.aop.RegisterCallBackFc;
@@ -21,7 +20,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        RedisProxy.set(ConfigConstant.chat_return_msg.getValue(), msg);
+        RedisProxy.set(ConfigConstant.CHAT_RETURN_MSG, msg);
         RegisterCallBackFc.callBackClMap.get("realController").callBack();
         logger.debug(msg);
     }

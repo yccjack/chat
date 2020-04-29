@@ -4,6 +4,7 @@ package com.ycc.netty.handler;
 import com.alibaba.fastjson.JSON;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.bean.SendMsg;
+import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.util.NameUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -59,7 +60,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         notifyChannel.setMethod(NotifyChannel.METHOD_GROUP_CHAT);
         sendMsg.setName(NameUtil.getName(channel.remoteAddress().toString()));
         notifyChannel.setSendMsg(sendMsg);
-        channels.forEach(ch -> ch.writeAndFlush(JSON.toJSONString(notifyChannel) + "\n"));
+        channels.forEach(ch -> ch.writeAndFlush(JSON.toJSONString(notifyChannel) + ConfigConstant.MSG_SPLIT));
     }
 
     /**
@@ -70,13 +71,13 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
      */
     private void p2pChat(SendMsg sendMsg, Channel channel) {
         NotifyChannel notifyChannel = new NotifyChannel();
-        notifyChannel.setMethod(NotifyChannel.METHOD_P2PCHAT);
+        notifyChannel.setMethod(NotifyChannel.METHOD_P2P_CHAT);
         notifyChannel.setSendMsg(sendMsg);
         sendMsg.setSendFrom(channel.remoteAddress().toString());
         String returnMsg = JSON.toJSONString(notifyChannel);
         channels.forEach(ch -> {
             if (ch.remoteAddress().toString().equals(sendMsg.getSendTarget().trim()) || ch == channel) {
-                ch.writeAndFlush(returnMsg + "\n");
+                ch.writeAndFlush(returnMsg + ConfigConstant.MSG_SPLIT);
             }
         });
     }
@@ -97,14 +98,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         chatBean.setMethod(NotifyChannel.METHOD_ADD);
         channels.forEach(ch -> {
             if (ch != channel) {
-                ch.writeAndFlush(JSON.toJSONString(chatBean) + "\n");
+                ch.writeAndFlush(JSON.toJSONString(chatBean) + ConfigConstant.MSG_SPLIT);
             } else {
                 NotifyChannel chatBean1 = new NotifyChannel();
                 chatBean1.setMethod(NotifyChannel.METHOD_INIT);
                 chatBean1.setChatList(NameUtil.nameMap);
                 chatBean1.setAddChatPerson(name);
                 chatBean1.setAddChatRemote(channel.remoteAddress().toString());
-                ch.writeAndFlush(JSON.toJSONString(chatBean1) + "\n");
+                ch.writeAndFlush(JSON.toJSONString(chatBean1) + ConfigConstant.MSG_SPLIT);
             }
         });
         log.debug("ChatServerHandler:" + channel.remoteAddress() + "在线");
@@ -133,7 +134,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 chatBean.setAddChatPerson(NameUtil.getName(channel.remoteAddress().toString()));
                 chatBean.setAddChatRemote(channel.remoteAddress().toString());
                 chatBean.setMethod(NotifyChannel.METHOD_REMOVE);
-                ch.writeAndFlush(JSON.toJSONString(chatBean) + "\n");
+                ch.writeAndFlush(JSON.toJSONString(chatBean) + ConfigConstant.MSG_SPLIT);
             }
         });
     }
@@ -157,25 +158,25 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        AddOrRemove(channel, " 进入聊天室");
+        addOrRemove(channel, " 进入聊天室");
         channels.add(ctx.channel());
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        AddOrRemove(channel, " 离开聊天室");
+        addOrRemove(channel, " 离开聊天室");
         NameUtil.remove(channel.remoteAddress().toString());
         channels.remove(ctx.channel());
     }
 
-    private void AddOrRemove(Channel channel, String s) {
+    private void addOrRemove(Channel channel, String s) {
         NotifyChannel notifyChannel = new NotifyChannel();
         notifyChannel.setMethod(NotifyChannel.METHOD_GROUP_CHAT);
         SendMsg sendMsg = new SendMsg();
         sendMsg.setChatMsg( NameUtil.getName(channel.remoteAddress().toString()) + s);
         notifyChannel.setSendMsg(sendMsg);
         channels.forEach(ch ->
-                ch.writeAndFlush(JSON.toJSONString(notifyChannel)+"\n"));
+                ch.writeAndFlush(JSON.toJSONString(notifyChannel)+ConfigConstant.MSG_SPLIT));
     }
 }

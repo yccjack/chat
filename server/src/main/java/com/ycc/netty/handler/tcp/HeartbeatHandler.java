@@ -3,6 +3,7 @@ package com.ycc.netty.handler.tcp;
 import com.alibaba.fastjson.JSON;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.bean.SendMsg;
+import com.ycc.netty.constant.ConfigConstant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -26,7 +27,7 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
         NotifyChannel notifyChannel = new NotifyChannel();
         notifyChannel.setMethod(NotifyChannel.HEARTBEAT);
         notifyChannel.setSendMsg(sendMsg);
-        HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(JSON.toJSONString(notifyChannel) + "\n", CharsetUtil.UTF_8));
+        HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(JSON.toJSONString(notifyChannel) + ConfigConstant.MSG_SPLIT, CharsetUtil.UTF_8));
     }
 
     @Override

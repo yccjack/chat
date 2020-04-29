@@ -1,5 +1,6 @@
 package com.ycc.netty.server;
 
+import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.handler.http.HttpChatServerInitializer;
 import com.ycc.netty.handler.tcp.ChatServerInitializer;
 import com.ycc.netty.listener.ServerBoundListener;
@@ -85,8 +86,8 @@ public class ChatServer {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         } else {
-            port = 8082;
+            port = ConfigConstant.CLIENT_SERVER_PORT;
         }
-        new ChatServer(port).websocket();
+        new ChatServer(port).run();
     }
 }

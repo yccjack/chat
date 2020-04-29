@@ -42,7 +42,7 @@ public class RootLayoutController extends AbstractLayoutController {
     public void sendMsg() {
         SendMsg sendMsg = new SendMsg();
         sendMsg.setChatMsg(sendMsgId.getText());
-        RedisProxy.set(ConfigConstant.chat_msg.getValue(), JSON.toJSONString(sendMsg));
+        RedisProxy.set(ConfigConstant.CHAT_MSG, JSON.toJSONString(sendMsg));
         try {
             client.start();
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class RootLayoutController extends AbstractLayoutController {
      */
     public void groupChat(NotifyChannel notifyChannel) {
         String msg = handlerMsg(notifyChannel);
-        chatHisId.appendText(msg + "\n");
+        chatHisId.appendText(msg + ConfigConstant.MSG_SPLIT);
         logger.debug(notifyChannel.toString());
     }
 

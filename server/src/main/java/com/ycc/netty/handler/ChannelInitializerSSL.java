@@ -1,6 +1,7 @@
 package com.ycc.netty.handler;
 
 import com.ycc.netty.constant.ConfigConstant;
+import com.ycc.netty.http.FullHttpHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -31,9 +32,9 @@ public class ChannelInitializerSSL extends ChannelInitializer<SocketChannel> {
 
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
-            keyStore.load(new FileInputStream(ConfigConstant.keyStoreFilePath.getValue()), ConfigConstant.keyStorePassword.getValue().toCharArray());
+            keyStore.load(new FileInputStream(ConfigConstant.KEY_STORE_FILE_PATH), ConfigConstant.KEY_STORE_PASSWORD.toCharArray());
             KeyManagerFactory keyStoreFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyStoreFactory.init(keyStore, ConfigConstant.keyStorePassword.getValue().toCharArray());
+            keyStoreFactory.init(keyStore, ConfigConstant.KEY_STORE_PASSWORD.toCharArray());
             sslContext = SslContextBuilder.forServer(keyStoreFactory).build();
 
         } catch (Exception e) {

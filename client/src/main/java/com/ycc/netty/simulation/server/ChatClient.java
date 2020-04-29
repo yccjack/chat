@@ -67,7 +67,7 @@ public class ChatClient {
     public void start() throws Exception {
         String msg = RedisProxy.get(ConfigConstant.CHAT_MSG);
         if (!StringUtil.isNullOrEmpty(msg)) {
-            channel.writeAndFlush(msg + "\n");
+            channel.writeAndFlush(msg + ConfigConstant.MSG_SPLIT);
             RedisProxy.del(ConfigConstant.CHAT_MSG);
         }
         if (!"true".equalsIgnoreCase(RedisProxy.get(ConfigConstant.CHAT_ACTIVE_COTL))) {

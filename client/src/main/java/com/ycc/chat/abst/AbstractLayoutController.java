@@ -15,11 +15,12 @@ import java.lang.reflect.Method;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * @author :MysticalYcc
  * @date :11:12 2019/2/20
  */
-public abstract class LayoutController {
+public abstract class AbstractLayoutController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected ChatClient client;
@@ -42,21 +43,23 @@ public abstract class LayoutController {
      */
     protected static NotifyChannel notifyChannel = new NotifyChannel();
 
+    private final static String heartbeat = "heartbeat";
+    private final static String p2pChat = "p2pChat";
     /**
      * 服务端回调
      */
     public void callBack() {
-        String returnMsg = RedisProxy.get(ConfigConstant.chat_return_msg.getValue());
+        String returnMsg = RedisProxy.get(ConfigConstant.CHAT_RETURN_MSG);
         logger.debug(returnMsg);
         NotifyChannel notifyChannel = JSON.parseObject(returnMsg, NotifyChannel.class);
         try {
             if (notifyChannel != null && notifyChannel.getMethod() != null) {
                 String callBackMethod = notifyChannel.getMethod();
-                Class<? extends LayoutController> aClass;
-                if (callBackMethod.equalsIgnoreCase("heartbeat")) {
+                Class<? extends AbstractLayoutController> aClass;
+                if (callBackMethod.equalsIgnoreCase(heartbeat)) {
                     this.heartbeat();
                 } else {
-                    if (!callBackMethod.equalsIgnoreCase("p2pChat")) {
+                    if (!callBackMethod.equalsIgnoreCase(p2pChat)) {
                         aClass = RegisterCallBackFc.callBackClMap.get("rootLayoutController").getClass();
                     } else {
                         aClass = this.getClass();
@@ -81,7 +84,7 @@ public abstract class LayoutController {
      */
     protected String handlerMsg(NotifyChannel notifyChannel) {
         SendMsg sendMsg = notifyChannel.getSendMsg();
-        Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
+        Map<String, String> chatList = AbstractLayoutController.notifyChannel.getChatList();
         LocalTime sendTime = sendMsg.getSendTime();
         String msg;
         if (sendMsg.getName() == null) {

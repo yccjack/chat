@@ -11,13 +11,34 @@ import java.util.Map;
  */
 public class NotifyChannel implements Serializable {
     private static final long serialVersionUID = 1;
+    /**
+     * 执行回调函数时确定执行哪个方法
+     */
     private String method;
+    /**
+     * 聊天人员列表
+     */
     private Map<String, String> chatList;
+    /**
+     * 新增人员
+     */
     private String addChatPerson;
+    /**
+     * 移除人员
+     */
     private String removeChatPerson;
+    /**
+     * 新增私聊的远程人员地址
+     */
     private String addChatRemote;
+    /**
+     * 移除私聊的远程人员地址
+     */
     private String removeChatRemote;
 
+    /**
+     * 发送的具体消息
+     */
     private SendMsg sendMsg;
 
     @JSONField(serialize = false)
@@ -27,7 +48,7 @@ public class NotifyChannel implements Serializable {
     @JSONField(serialize = false)
     public transient final static String METHOD_INIT = "init";
     @JSONField(serialize = false)
-    public transient final static String METHOD_P2PCHAT = "p2pChat";
+    public transient final static String METHOD_P2P_CHAT = "p2pChat";
     @JSONField(serialize = false)
     public transient final static String METHOD_GROUP_CHAT = "groupChat";
     @JSONField(serialize = false)

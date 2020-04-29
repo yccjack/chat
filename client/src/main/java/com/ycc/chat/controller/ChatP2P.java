@@ -29,7 +29,7 @@ public class ChatP2P extends AbstractLayoutController {
         SendMsg sendMsg = new SendMsg();
         sendMsg.setChatMsg(sendMsgId.getText());
         sendMsg.setSendTarget(remoteAddr);
-        RedisProxy.set(ConfigConstant.chat_msg.getValue(), JSON.toJSONString(sendMsg));
+        RedisProxy.set(ConfigConstant.CHAT_MSG, JSON.toJSONString(sendMsg));
         try {
             client.start();
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class ChatP2P extends AbstractLayoutController {
     @Override
     public void p2pChat(NotifyChannel notifyChannel) {
         String msg = handlerMsg( notifyChannel);
-        chatHisId.appendText(msg + "\n");
+        chatHisId.appendText(msg + ConfigConstant.MSG_SPLIT);
         logger.debug(notifyChannel.toString());
     }
 }
