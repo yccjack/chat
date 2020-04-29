@@ -33,11 +33,11 @@ public class ChatClient {
 
     /**
      * default host:192.168.6.211
-     * port:8081
+     * port:8082
      */
     public ChatClient() {
-        this.port = Integer.parseInt(ConfigConstant.serverPort.getValue());
-        this.host = ConfigConstant.serverHost.getValue();
+        this.port = ConfigConstant.CLIENT_SERVER_PORT;
+        this.host = ConfigConstant.SERVER_HOST;
     }
 
     /**
@@ -54,23 +54,23 @@ public class ChatClient {
         ChannelFuture sync = b.connect(host, port).sync();
         sync.addListener(new FutureListener());
         channel = sync.channel();
-        RedisProxy.set(ConfigConstant.chat_active_cotl.getValue(), "true");
+        RedisProxy.set(ConfigConstant.CHAT_ACTIVE_COTL, "true");
         start();
     }
 
 
     /**
      * 发送消息
-     *
+     * 发送消息，以\n截断;
      * @throws Exception
      */
     public void start() throws Exception {
-        String msg = RedisProxy.get(ConfigConstant.chat_msg.getValue());
+        String msg = RedisProxy.get(ConfigConstant.CHAT_MSG);
         if (!StringUtil.isNullOrEmpty(msg)) {
             channel.writeAndFlush(msg + "\n");
-            RedisProxy.del(ConfigConstant.chat_msg.getValue());
+            RedisProxy.del(ConfigConstant.CHAT_MSG);
         }
-        if (!"true".equalsIgnoreCase(RedisProxy.get(ConfigConstant.chat_active_cotl.getValue()))) {
+        if (!"true".equalsIgnoreCase(RedisProxy.get(ConfigConstant.CHAT_ACTIVE_COTL))) {
             destroyClient();
         }
 
@@ -92,11 +92,11 @@ public class ChatClient {
     public static void main(String[] args) throws Exception {
         if (args.length > 1) {
             String host = args[0];
-            new ChatClient(host, 8081).run();
+            new ChatClient(host, 8082).run();
         } else {
-            ChatClient simpleChatClient = new ChatClient("localhost", 8081);
+            ChatClient simpleChatClient = new ChatClient(ConfigConstant.SERVER_HOST, ConfigConstant.CLIENT_SERVER_PORT);
             for (int i = 0; i < 10; i++) {
-                RedisProxy.set(ConfigConstant.chat_msg.getValue(), i + "");
+                RedisProxy.set(ConfigConstant.CHAT_MSG, i + "");
                 if (i == 0) {
                     simpleChatClient.run();
                 } else {
@@ -104,7 +104,7 @@ public class ChatClient {
                 }
                 Thread.sleep(500);
             }
-            RedisProxy.set(ConfigConstant.chat_active_cotl.getValue(), "false");
+            RedisProxy.set(ConfigConstant.CHAT_ACTIVE_COTL, "false");
             simpleChatClient.start();
         }
     }

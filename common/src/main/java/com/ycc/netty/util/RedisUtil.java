@@ -1,5 +1,6 @@
 package com.ycc.netty.util;
 
+import com.ycc.netty.constant.ConfigConstant;
 import io.netty.util.internal.StringUtil;
 import redis.clients.jedis.Jedis;
 
@@ -27,10 +28,9 @@ public class RedisUtil {
 
     static {
         try {
-            jedis = new Jedis("192.168.6.211", 6379);
-            System.out.println("Redis Util Is Already");
+            jedis = new Jedis(ConfigConstant.SERVER_HOST, 6379);
         } catch (Exception e) {
-            System.out.println("请检查Jedis配置.");
+           e.printStackTrace();
         }
     }
 

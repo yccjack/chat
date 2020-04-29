@@ -1,48 +1,40 @@
 package com.ycc.netty.constant;
 
 /**
- * @author shihongkui
+ * @author MysticalYcc
  * @version 1.0
  * @date 2019/1/21 14:18
+ * update_1 2020年4月29日
  */
-public enum ConfigConstant {
+public class ConfigConstant {
     /**
      * ssl认证密匙存放路径
      */
-    keyStoreFilePath(""),
+    public final static String KEY_STORE_FILE_PATH = "";
     /**
      * ssl认证对应密钥
      */
-    keyStorePassword(""),
+    public final static String KEY_STORE_PASSWORD = "";
     /**
      * 服务开启关闭key
      */
-    chat_active_cotl("YCC_CHAT_ACTIVE_CROL"),
+    public final static String CHAT_ACTIVE_COTL = "LAL_CHAT_ACTIVE_CROL";
     /**
      * 发送消息key
      */
-    chat_msg("YCC_CHAT_MSG"),
+    public final static String CHAT_MSG = "LAL_CHAT_MSG";
     /**
      * 接收消息key
      */
-    chat_return_msg("YCC_CHAT_RETURN_MSG"),
+    public final static String CHAT_RETURN_MSG = "LAL_CHAT_RETURN_MSG";
 
     /**
      * 服务器默认端口
      */
-    serverPort("8082"),
+    public final static int CLIENT_SERVER_PORT = 8082;
     /**
      * 服务器默认地址
      */
-    serverHost("localhost");
-    private String value;
-
-    ConfigConstant(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
+    public final static String SERVER_HOST = "gschaos.club";
 
 }

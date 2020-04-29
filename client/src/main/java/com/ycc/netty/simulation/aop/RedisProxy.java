@@ -10,6 +10,9 @@ import java.util.concurrent.ConcurrentMap;
  * @date :11:12 2019/2/20
  */
 public enum RedisProxy {
+    /**
+     * 存放信息工具实例
+     */
     INSTANCE;
 
     public static RedisProxy getInstance() {
@@ -21,7 +24,7 @@ public enum RedisProxy {
      */
     public static boolean redisSwitch = false;
 
-    private static ConcurrentMap<String, String> redisMap = new ConcurrentHashMap<>();
+    private static ConcurrentMap<String, String> redisMap = new ConcurrentHashMap<>(1024*1024);
 
     public static String get(String key) {
         String result;
