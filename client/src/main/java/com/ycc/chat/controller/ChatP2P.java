@@ -1,7 +1,7 @@
 package com.ycc.chat.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ycc.chat.abst.LayoutController;
+import com.ycc.chat.abst.AbstractLayoutController;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.bean.SendMsg;
 import com.ycc.netty.constant.ConfigConstant;
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
  * @author :MysticalYcc
  * @date :11:12 2019/2/20
  */
-public class ChatP2P extends LayoutController {
+public class ChatP2P extends AbstractLayoutController {
     @FXML
     public TextField sendMsgId;
     @FXML
@@ -39,10 +39,12 @@ public class ChatP2P extends LayoutController {
 
     }
 
+    @Override
     public void setRemoteAddr(String remoteAddr) {
         this.remoteAddr = remoteAddr;
     }
 
+    @Override
     public void setRemoteName(String remoteName) {
         this.remoteName = remoteName;
     }

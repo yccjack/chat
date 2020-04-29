@@ -1,7 +1,8 @@
 package com.ycc;
 
-import com.ycc.chat.abst.LayoutController;
+import com.ycc.chat.controller.ChatP2P;
 import com.ycc.chat.controller.ConnectLayoutController;
+import com.ycc.chat.controller.RootLayoutController;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.simulation.aop.RegisterCallBackFc;
 import com.ycc.netty.simulation.server.ChatClient;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 /**
  * @author MysticalYcc
+ * javaFX 主启动类，由此类启动javaFX登录界面，再通过登录界面启动远程服务连接和聊天界面。
  */
 public class Main extends Application {
 
@@ -29,7 +31,7 @@ public class Main extends Application {
         loader.setLocation(this.getClass().getClassLoader().getResource("root.fxml"));
         try {
             AnchorPane load = loader.load();
-            LayoutController rootLayoutController = loader.getController();
+            RootLayoutController rootLayoutController = loader.getController();
             intClient(host, port);
             rootLayoutController.setClient(client);
             rootLayoutController.setAppMain(this);
@@ -119,7 +121,7 @@ public class Main extends Application {
         loader.setLocation(this.getClass().getClassLoader().getResource("P2P.fxml"));
         try {
             AnchorPane load = loader.load();
-            LayoutController chatP2P = loader.getController();
+            ChatP2P chatP2P = loader.getController();
             chatP2P.setRemoteAddr(remoteAddr);
             chatP2P.setRemoteName(remoteName);
             /**
@@ -134,6 +136,9 @@ public class Main extends Application {
             if (notifyChannel != null) {
                 chatP2P.p2pChat(notifyChannel);
             }
+            dialogP2P.setOnCloseRequest((event) -> {
+                RegisterCallBackFc.registerCallBack("realController", RegisterCallBackFc.callBackClMap.get("rootLayoutController"));
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

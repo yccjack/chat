@@ -1,5 +1,6 @@
 package com.ycc.netty.simulation.handler;
 
+import com.ycc.Main;
 import com.ycc.netty.constant.ConfigConstant;
 import com.ycc.netty.simulation.aop.RedisProxy;
 import com.ycc.netty.simulation.aop.RegisterCallBackFc;

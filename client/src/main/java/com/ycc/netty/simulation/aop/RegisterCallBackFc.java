@@ -1,6 +1,6 @@
 package com.ycc.netty.simulation.aop;
 
-import com.ycc.chat.abst.LayoutController;
+import com.ycc.chat.abst.AbstractLayoutController;
 import com.ycc.netty.simulation.handler.ChatClientHandler;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public enum RegisterCallBackFc {
      *
      */
     INSTANCE;
-    public static Map<String, LayoutController> callBackClMap = new HashMap<>();
+    public static Map<String, AbstractLayoutController> callBackClMap = new HashMap<>();
 
     private static ChatClientHandler chatClientHandler;
 
@@ -27,7 +27,7 @@ public enum RegisterCallBackFc {
     }
 
 
-    public static void registerCallBack(String callBackName, LayoutController controller) {
+    public static void registerCallBack(String callBackName, AbstractLayoutController controller) {
         callBackClMap.put(callBackName, controller);
     }
 

@@ -1,7 +1,7 @@
 package com.ycc.chat.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ycc.chat.abst.LayoutController;
+import com.ycc.chat.abst.AbstractLayoutController;
 import com.ycc.netty.bean.NotifyChannel;
 import com.ycc.netty.bean.SendMsg;
 import com.ycc.netty.constant.ConfigConstant;
@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @author MysticalYcc
  */
-public class RootLayoutController extends LayoutController {
+public class RootLayoutController extends AbstractLayoutController {
 
     @FXML
     public TextField sendMsgId;
@@ -59,6 +59,7 @@ public class RootLayoutController extends LayoutController {
         appMain.initP2P(remoteAddrMap.get(select), select, null);
     }
 
+    @Override
     public void setClient(ChatClient client) {
         this.client = client;
     }
@@ -75,13 +76,13 @@ public class RootLayoutController extends LayoutController {
         for (Map.Entry<String, String> entry : chatList.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(notifyChannel.getAddChatRemote())) {
                 chatListView.add("[you]" + entry.getValue());
-                LayoutController.myName = entry.getValue();
+                AbstractLayoutController.myName = entry.getValue();
             } else {
                 chatListView.add(entry.getValue());
             }
             remoteAddrMap.put(entry.getValue(), entry.getKey());
         }
-        LayoutController.notifyChannel.setChatList(chatList);
+        AbstractLayoutController.notifyChannel.setChatList(chatList);
         ObservableList<String> strList = FXCollections.observableArrayList(chatListView);
         chatHumanId.setItems(strList);
 
@@ -93,7 +94,7 @@ public class RootLayoutController extends LayoutController {
      * @param notifyChannel 传输的bean
      */
     public void add(NotifyChannel notifyChannel) {
-        Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
+        Map<String, String> chatList = AbstractLayoutController.notifyChannel.getChatList();
         remoteAddrMap.put(notifyChannel.getAddChatPerson(), notifyChannel.getAddChatRemote());
         chatList.put(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().add(notifyChannel.getAddChatPerson()));
@@ -105,7 +106,7 @@ public class RootLayoutController extends LayoutController {
      * @param notifyChannel 传输的bean
      */
     public void remove(NotifyChannel notifyChannel) {
-        Map<String, String> chatList = LayoutController.notifyChannel.getChatList();
+        Map<String, String> chatList = AbstractLayoutController.notifyChannel.getChatList();
         remoteAddrMap.remove(notifyChannel.getAddChatPerson());
         chatList.remove(notifyChannel.getAddChatRemote(), notifyChannel.getAddChatPerson());
         Platform.runLater(() -> chatHumanId.getItems().remove(notifyChannel.getAddChatPerson()));
@@ -130,7 +131,7 @@ public class RootLayoutController extends LayoutController {
     @Override
     public void p2pChat(NotifyChannel notifyChannel) {
         SendMsg msg = notifyChannel.getSendMsg();
-        Platform.runLater(() -> appMain.initP2P(msg.getSendFrom(), LayoutController.notifyChannel.getChatList().get(msg.getSendFrom()), notifyChannel));
+        Platform.runLater(() -> appMain.initP2P(msg.getSendFrom(), AbstractLayoutController.notifyChannel.getChatList().get(msg.getSendFrom()), notifyChannel));
     }
 
 }
