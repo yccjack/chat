@@ -88,6 +88,6 @@ public class ChatServer {
         } else {
             port = ConfigConstant.CLIENT_SERVER_PORT;
         }
-        new ChatServer(port).run();
+        new ChatServer(port).websocket();
     }
 }

@@ -35,7 +35,7 @@ public class ConfigConstant {
     /**
      * 服务器默认地址
      */
-    public final static String SERVER_HOST = "gschaos.club";
+    public final static String SERVER_HOST = "localhost";
 
     /**
      * 消息分隔符

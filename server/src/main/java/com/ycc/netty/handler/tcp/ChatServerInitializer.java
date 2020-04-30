@@ -34,7 +34,7 @@ public class ChatServerInitializer extends ChannelInitializer<SocketChannel> {
                 .addLast("decoder", new StringDecoder())
                 .addLast("encoder", new StringEncoder())
                 .addLast(new IdleStateHandler(0, 0, 10, TimeUnit.SECONDS))
-                .addLast(new HeartbeatHandler())
+                //.addLast(new HeartbeatHandler())
                 .addLast("handler", new ChatServerHandler(channels));
         log.debug("HttpChatServerInitializer:" + socketChannel.remoteAddress() + "连接上");
     }

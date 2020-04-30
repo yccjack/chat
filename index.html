@@ -1,24 +1,179 @@
-<html>
+<html lang="zh-CN">
 <head>
     <title>Web Socket Test</title>
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Lato');
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: url('https://s2.ax1x.com/2019/09/03/nFZEQK.jpg');
+        background-size: cover;
+        background-position: center center;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        min-height: 100vh;
+        font-family: 'Lato', sans-serif;
+        margin: 0 0 50px;
+    }
+
+    h2 {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+        color: #fff;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .chat-container {
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 25px;
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+        padding: 15px;
+        position: relative;
+        width: 320px;
+        max-width: 100%;
+    }
+
+    .chat {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .message {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 50px;
+        box-shadow: 0px 15px 5px 0px rgba(0, 0, 0, 0.5);
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .message.left {
+        padding: 15px 20px 15px 70px;
+    }
+
+    .message.right {
+        align-self: flex-end;
+        padding: 15px 70px 15px 20px;
+    }
+
+    .logo {
+        border-radius: 50%;
+        box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.7);
+        -o-object-fit: cover;
+        object-fit: cover;
+        position: absolute;
+        left: 10px;
+        top: -10px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .message.right .logo {
+        left: auto;
+        right: 10px;
+    }
+
+    .message p {
+        margin: 0;
+    }
+
+    .text_input {
+        font-size: 16px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 15px;
+        width: 100%;
+    }
+
+    footer {
+        background-color: #222;
+        color: #fff;
+        font-size: 14px;
+        bottom: 0;
+        position: fixed;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 999;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+
+    footer i {
+        color: red;
+    }
+
+    footer a {
+        color: #3c97bf;
+        text-decoration: none;
+    }
+</style>
 <body>
+
 <script type="text/javascript">
+    // window.onbeforeunload = function (e) {
+    //     var message = 'some word';
+    //     e = e || window.event;
+    //
+    //     if (e) {
+    //         e.returnValue = message;
+    //     }
+    //
+    //     return message;
+    // };
+    $(document).keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("input[type='button']").trigger("click");
+        }
+    });
     var socket;
     if (!window.WebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
     if (window.WebSocket) {
         socket = new WebSocket("ws://localhost:8082/ws");
-        socket.onmessage = function(event) {
-            var ta = document.getElementById('responseText');
-            ta.value = ta.value + '\n' + event.data
+        socket.onmessage = function (event) {
+            var ta = $('#responseText');
+            var $newElement = $('<p class="message left">' + event.data + '</p>');//创建元素,返回jQuery对象
+            ta.append($newElement);
+            //移动滚动条到最底部
+            var scrollHeight = ta.prop("scrollHeight");
+            ta.scrollTop(scrollHeight, 200);
         };
-        socket.onopen = function(event) {
+        socket.onopen = function (event) {
             var ta = document.getElementById('responseText');
             ta.value = "Web Socket opened!";
         };
-        socket.onclose = function(event) {
+        socket.onclose = function (event) {
             var ta = document.getElementById('responseText');
             ta.value = ta.value + "Web Socket closed";
         };
@@ -26,21 +181,46 @@
         alert("Your browser does not support Web Socket.");
     }
 
-    function send(message) {
-        if (!window.WebSocket) { return; }
+    function send() {
+        if (!window.WebSocket) {
+            return;
+        }
         if (socket.readyState == WebSocket.OPEN) {
-            socket.send(message);
+
+            var message = $("input[name='message']").val();
+            if (message.trim() != "") {
+                socket.send(message);
+            } else {
+                return false;
+            }
+
+            $("input[name='message']").val("");
         } else {
             alert("The socket is not open.");
         }
     }
 </script>
-<form onsubmit="return false;">
-    <input type="text" name="message" value="Hello, World!"><input
-        type="button" value="Send Web Socket Data"
-        onclick="send(this.form.message.value)">
-    <h3>Output</h3>
-    <textarea id="responseText" style="width: 500px; height: 300px;"></textarea>
-</form>
+
+<div class="row" style="border: aqua ">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chat-container">
+                <div class="chat" id="responseText" style="height: 500px;OVERFLOW: auto; ">
+                </div>
+                <input name="message" type="text" class="text_input" value="123" placeholder="Message..."/>
+                <input hidden type="button" value="Send Web Socket Data" onclick="send()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" style="height: 7%">
+    <div class="container">
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item"
+                    src="//music.163.com/outchain/player?type=0&id=374088504&auto=1&height=32"></iframe>
+        </div>
+    </div>
+</nav>
 </body>
 </html>
