@@ -15,6 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.misc.Signal;
 
 /**
  * @author ycc
@@ -47,10 +48,8 @@ public class ChatServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             serverStart(b);
-        } finally {
-            worker.shutdownGracefully().sync();
-            boss.shutdownGracefully().sync();
-            log.info("服务关闭");
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -59,26 +58,30 @@ public class ChatServer {
      *
      * @throws Exception
      */
-    private void websocket() throws Exception {
+    private void websocket() {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(boss, worker)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new HttpChatServerInitializer(group));
             serverStart(b);
-        } finally {
-            worker.shutdownGracefully().sync();
-            boss.shutdownGracefully().sync();
-            log.info("服务关闭");
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     private void serverStart(ServerBootstrap b) throws InterruptedException {
+        Signal signal = new Signal(getOOSignalType());
+        Signal.handle(signal,new shutdownHandler(boss,worker));
         log.info("服务启动");
         ChannelFuture f = b.bind(port).sync();
         f.addListener(new ServerBoundListener());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> f.channel().close()));
-        f.channel().closeFuture().syncUninterruptibly();
+    }
+
+    private String getOOSignalType() {
+   return System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")?"INT":"TERM";
+
     }
 
     public static void main(String[] args) throws Exception {
